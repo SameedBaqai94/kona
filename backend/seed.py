@@ -1,12 +1,12 @@
 import requests
-from sentence_transformers import SentenceTransformer
+from fastembed import TextEmbedding
 from models.anime_records import AnimeRecord
 from db_config import init_db, SessionLocal
 
 def main():
 
     print("Loading AI Model...")
-    model = SentenceTransformer("all-MiniLM-L6-v2")
+    model = TextEmbedding("BAAI/bge-small-en-v1.5")
 
     print("Initializing Database...")
     init_db()
@@ -58,7 +58,7 @@ def main():
         text_to_vectorize = f"Title: {title}. Genres: {genres}. Tags: {tags_str}. Synopsis: {description}"
 
         # Generate the vector
-        embedding = model.encode(text_to_vectorize)
+        embedding = list(model.embed([text_to_vectorize]))[0]
         
        # Create the database record
         new_anime = AnimeRecord(

@@ -11,7 +11,10 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Vite's default port
+    allow_origins=[
+        "http://localhost:5173",
+        "https://your-railway-frontend-url.up.railway.app",  # add this later when frontend is deployed
+    ],
     allow_methods=["*"],
     allow_headers=["*"],
 )
