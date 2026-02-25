@@ -1,0 +1,29 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: kona_db_container
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: kona_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - anime_pgdata:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: kona_backend_container
+    restart: always
+    environment:
+      DATABASE_URL: postgresql://postgres:root@db:5432/kona_db
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+volumes:
+  anime_pgdata:
