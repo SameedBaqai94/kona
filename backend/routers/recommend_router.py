@@ -22,7 +22,7 @@ def recommend(
         raise HTTPException(status_code=400, detail="Query cannot be empty")
 
     # Embed the user query using the same model used during ingest
-    query_embedding = model.encode(q).tolist()
+    query_embedding = list(model.embed([q]))[0].tolist()
 
     # pgvector cosine distance search — closest vectors = most similar anime
     results = (
